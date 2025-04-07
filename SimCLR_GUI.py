@@ -41,6 +41,11 @@ import io
 from io import BytesIO
 from PIL import Image
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
+import logging
+
+for name, l in logging.root.manager.loggerDict.items():
+    if "streamlit" in name:
+        l.disabled = True
 
 # === Encoder Model ===
 class Encoder(nn.Module):
