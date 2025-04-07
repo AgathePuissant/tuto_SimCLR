@@ -1,19 +1,13 @@
-
-pip install streamlit
-pip install os
-pip install pandas
-pip install matplotlib
-pip install PIL
-pip install tqdm
-pip install glob
-pip install scikit-learn
-pip install time
-pip install copy
-pip install typing
-pip install random
-pip install numpy
-pip install cv2
-pip install plotly
-pip install tqdm
-pip install pathlib
-pip install argparse
+streamlit
+pandas
+matplotlib
+pillow
+tqdm
+scikit-learn
+typing
+numpy
+opencv-python
+plotly
+tqdm
+pathlib
+argparse
