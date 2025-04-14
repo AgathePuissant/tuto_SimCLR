@@ -727,7 +727,7 @@ if page == "GradCAM":
         if gradcam_mode == "Single Image" and gradcam_img is not None:
             image = Image.open(gradcam_img).convert("RGB")
             result = process_image(image, "gradcam_result.png")
-            st.image(result, caption="Grad-CAM Result", use_container_width=True)
+            st.image(result, caption="Grad-CAM Result")
 
         elif gradcam_mode == "Folder" and gradcam_folder:
             files = []
