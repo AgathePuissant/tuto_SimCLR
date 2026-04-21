@@ -1,4 +1,4 @@
-# 🔬 tuto_simclr
+# 🔬 Tutorial SimCLR/SupCon
 
 **Train visual representation models (SimCLR & SupCon) using a simple graphical interface**
 
@@ -114,20 +114,26 @@ Accepted image formats: `.jpg`, `.jpeg`, `.png`
 ## ⚙️ requirements.txt
 
 ```
-streamlit>=1.32
-torch>=2.0
-torchvision>=0.15
-Pillow>=9.0
-numpy>=1.24
-pandas>=2.0
-matplotlib>=3.7
-scikit-learn>=1.3
-tqdm>=4.65
-pytorch-grad-cam>=1.4
-scipy>=1.11
-umap-learn>=0.5
-distinctipy>=1.2
-plotly>=5.18
+streamlit
+pandas
+matplotlib
+pillow
+tqdm
+scikit-learn
+typing
+numpy
+opencv-python
+plotly
+tqdm
+pathlib
+argparse
+grad-cam
+umap-learn
+torch
+torchvision
+scipy
+distinctipy
+plotly
 ```
 
 > **GPU setup:** if you have an NVIDIA GPU, replace the `torch` and `torchvision` lines with the CUDA-enabled versions from [pytorch.org](https://pytorch.org/get-started/locally/).
