@@ -140,15 +140,6 @@ my_dataset/
 
 The subfolder name automatically becomes the class label. Accepted formats are `.jpg`, `.jpeg`, and `.png`.
 
-### Recommended minimum dataset size
-
-| Use case | Recommended minimum |
-|---|---|
-| Testing / exploration | 50 images per class |
-| SimCLR training | 200+ images per class |
-| SupCon training | 100+ images per class |
-| Reliable results | 500+ images per class |
-
 ### The provided example images
 
 The `data/` folder in the repository contains a small set of example images organised into subfolders, so you can test the interface immediately without preparing your own dataset. Use `data/` as the dataset path to get started right away.
@@ -162,12 +153,7 @@ The `data/` folder in the repository contains a small set of example images orga
 
 ---
 
-## 4. Home page — overview
-
-When you launch the interface, you land on the **Home page**. It gives you a summary of each section and shows information about your environment:
-
-- **Green banner (GPU detected):** training will be fast
-- **Orange banner (CPU only):** training will be slower — reduce the number of epochs and batch size
+## 4. Navigation between pages
 
 Navigation between pages is done through the **left-hand sidebar**.
 
@@ -175,7 +161,7 @@ Navigation between pages is done through the **left-hand sidebar**.
 
 ## 5. Training a SimCLR model
 
-Go to **SimCLR Training** in the sidebar.
+Go to **Training** in the sidebar.
 
 ### Understanding the parameters
 
