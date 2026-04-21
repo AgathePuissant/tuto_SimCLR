@@ -12,3 +12,4 @@ tqdm
 pathlib
 argparse
 grad-cam
+umap-learn
