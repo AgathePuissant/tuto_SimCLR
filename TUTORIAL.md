@@ -315,14 +315,6 @@ If two images show the same type of object, their embeddings will be close in th
 3. **CSV save path:** where to save the results
 4. Click **Generate embeddings**
 
-### What you will see
-
-After loading the model, the interface displays its metadata:
-
-```
-Model loaded — backbone: resnet50 | out_dim: 128 | feature_dim: 2048
-```
-
 A progress bar shows the current image count as extraction proceeds.
 
 ### Format of the produced CSV
