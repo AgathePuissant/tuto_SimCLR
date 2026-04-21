@@ -13,3 +13,8 @@ pathlib
 argparse
 grad-cam
 umap-learn
+torch
+torchvision
+scipy
+distinctipy
+plotly
