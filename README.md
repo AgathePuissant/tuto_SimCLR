@@ -1,6 +1,6 @@
 # 🔬 tuto_simclr
 
-**Train visual representation models (SimCLR & SupCon) using a simple graphical interface — no machine learning expertise required.**
+**Train visual representation models (SimCLR & SupCon) using a simple graphical interface**
 
 ---
 
