@@ -1224,8 +1224,25 @@ elif page == "Generate Embeddings":
 
             df = pd.DataFrame(embeddings)
             df.to_csv(embedding_save_path, index=False, sep=";")
-
+            
+            # Extract filenames and feature arrays from the embeddings list
+            filenames = [row[0] for row in embeddings]
+            feats_array = np.array([row[1:] for row in embeddings], dtype=np.float32)
+            
+            # Save ref_feats.npy (shape: N x feature_dim)
+            feats_save_path = os.path.join(os.path.dirname(embedding_save_path) or ".", "ref_feats.npy")
+            np.save(feats_save_path, feats_array)
+            
+            # Save ref_labels.npy (shape: N,) — derived from the parent subfolder name of each image
+            labels_array = np.array([
+                os.path.basename(os.path.dirname(p)) for p in image_paths
+            ])
+            labels_save_path = os.path.join(os.path.dirname(embedding_save_path) or ".", "ref_labels.npy")
+            np.save(labels_save_path, labels_array)
+            
             st.success(f"Embeddings saved to {embedding_save_path}")
+            st.success(f"ref_feats.npy saved ({feats_array.shape[0]} images × {feats_array.shape[1]} features) → {feats_save_path}")
+            st.success(f"ref_labels.npy saved ({len(labels_array)} labels) → {labels_save_path}")
             progress_bar.empty()
         except Exception as e:
             st.error(f"Error: {str(e)}")
