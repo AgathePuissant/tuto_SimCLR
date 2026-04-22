@@ -242,7 +242,7 @@ Augmentations are the random transformations applied to each image to create the
 
 During training, you will see:
 
-- **4 live metric tiles:** current epoch, loss, best loss so far, k-NN accuracy (if enabled)
+- **Live metric:** current epoch, loss, k-NN accuracy (if enabled)
 - **A loss curve** plotted in real time — it should decrease progressively
 - If k-NN is enabled, a **second orange curve** on the right axis shows the accuracy climbing
 
@@ -256,12 +256,10 @@ runs/
 |   +-- checkpoint_epoch_10.pth    (model state saved at epoch 10)
 |   +-- checkpoint_epoch_20.pth
 |   +-- ...
-+-- best_model.pth                  (best model: minimum loss or best k-NN)
-+-- simclr_model_last.pth           (model at the very last epoch)
++-- simclr_model.pth           (model at the very last epoch)
 +-- simclr_model_training_log.csv   (epoch-by-epoch metrics history)
 ```
 
-Download buttons appear at the end of training so you can save files directly without navigating your filesystem.
 
 ---
 
