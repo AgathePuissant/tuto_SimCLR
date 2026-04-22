@@ -1,6 +1,6 @@
-# 🔬 Tutorial SimCLR/SupCon
+# 🔬 tuto_simclr
 
-**Train visual representation models (SimCLR & SupCon) using a simple graphical interface**
+**Train visual representation models (SimCLR & SupCon) using a simple graphical interface — no machine learning expertise required.**
 
 ---
 
@@ -44,34 +44,108 @@ tuto_simclr/
 
 ### Prerequisites
 
-- [Python 3.9 or 3.10](https://www.python.org/downloads/) installed on your machine
+- [Anaconda](https://www.anaconda.com/download) (or [Miniconda](https://docs.anaconda.com/miniconda/)) installed on your machine — this handles Python and package management for you
 - [Git](https://git-scm.com/downloads/) installed
 - (Optional but recommended) an NVIDIA GPU with [CUDA drivers](https://developer.nvidia.com/cuda-downloads)
 
-### Steps
+> **Why Anaconda?** Anaconda makes it easy to create isolated Python environments and avoids common conflicts between packages. It also ships with many scientific libraries pre-installed.
+
+---
+
+### Step 1 — Install Anaconda
+
+Download and install **Anaconda** from [anaconda.com/download](https://www.anaconda.com/download).  
+During installation, accept the default options. On Windows, you can use the **Anaconda Prompt** that gets installed alongside it — use that instead of the regular Command Prompt for all the steps below.
+
+To verify it is installed correctly, open **Anaconda Prompt** (Windows) or a terminal (Mac/Linux) and type:
 
 ```bash
-# 1. Clone the repository
+conda --version
+# You should see something like: conda 24.x.x
+```
+
+---
+
+### Step 2 — Clone the repository
+
+```bash
 git clone https://github.com/your_username/tuto_simclr.git
 cd tuto_simclr
+```
 
-# 2. Create a virtual environment
-python -m venv venv
+If you do not have Git installed, click **Code > Download ZIP** on the GitHub page, extract the archive, and navigate into the folder.
 
-# Windows
-venv\Scripts\activate
+---
 
-# Mac / Linux
-source venv/bin/activate
+### Step 3 — Create a conda environment
 
-# 3. Install dependencies
+A conda environment is an isolated workspace with its own Python version and packages. This prevents conflicts with other projects on your machine.
+
+```bash
+conda create -n simclr_env python=3.10 -y
+conda activate simclr_env
+```
+
+After activation, you should see `(simclr_env)` at the start of your prompt. **All subsequent commands must be run with this environment active.**
+
+---
+
+### Step 4 — Install PyTorch
+
+PyTorch needs to be installed separately so you can pick the right version for your hardware.
+
+**If you have an NVIDIA GPU** (recommended for training):
+
+Go to [pytorch.org/get-started/locally](https://pytorch.org/get-started/locally/), select your OS and CUDA version, and copy the generated install command. It will look something like:
+
+```bash
+conda install pytorch torchvision pytorch-cuda=12.1 -c pytorch -c nvidia -y
+```
+
+**If you have no GPU (CPU only):**
+
+```bash
+conda install pytorch torchvision cpuonly -c pytorch -y
+```
+
+> **How to check your CUDA version:** open a terminal and run `nvidia-smi`. The CUDA version appears in the top-right corner of the output. If the command is not found, you either have no NVIDIA GPU or the drivers are not installed.
+
+---
+
+### Step 5 — Install the remaining dependencies
+
+```bash
 pip install -r requirements.txt
+```
+
+---
+
+### Step 6 — Launch the interface
+
+```bash
+streamlit run SimCLR_GUI4.py
+```
+
+The interface opens automatically in your browser at `http://localhost:8501`.  
+To stop it, go back to the terminal and press `Ctrl + C`.
+
+---
+
+### Reopening the interface later
+
+Every time you want to use the interface after closing it, you just need to:
+
+```bash
+# 1. Open Anaconda Prompt (Windows) or a terminal (Mac/Linux)
+# 2. Activate the environment
+conda activate simclr_env
+
+# 3. Navigate to the project folder
+cd path/to/tuto_simclr
 
 # 4. Launch the interface
 streamlit run SimCLR_GUI4.py
 ```
-
-The interface opens automatically in your browser at `http://localhost:8501`.
 
 ---
 
@@ -113,6 +187,8 @@ Accepted image formats: `.jpg`, `.jpeg`, `.png`
 
 ## ⚙️ requirements.txt
 
+The following packages are installed via `pip install -r requirements.txt` (after PyTorch has been installed via conda in Step 4):
+
 ```
 streamlit
 pandas
@@ -124,19 +200,15 @@ typing
 numpy
 opencv-python
 plotly
-tqdm
 pathlib
 argparse
 grad-cam
 umap-learn
-torch
-torchvision
 scipy
 distinctipy
-plotly
 ```
 
-> **GPU setup:** if you have an NVIDIA GPU, replace the `torch` and `torchvision` lines with the CUDA-enabled versions from [pytorch.org](https://pytorch.org/get-started/locally/).
+> **Note:** `torch` and `torchvision` are intentionally absent from this file — they must be installed via conda as described in Step 4, to ensure you get the version that matches your hardware (GPU or CPU).
 
 ---
 
@@ -155,7 +227,7 @@ Make sure your images are inside **subfolders** within the folder you specified.
 Organise them into subfolders named after each category (as in `data/`), then enter the path to your folder in the interface.
 
 **The interface crashes on Windows with DataLoader errors.**
-This is a known Windows multiprocessing issue with PyTorch. Set `num_workers=0` in any DataLoader call if you encounter it.
+This is a known Windows multiprocessing issue with PyTorch. The interface handles this automatically by using `num_workers=0` on Windows — no action needed on your part.
 
 **How do I stop the application?**
 Go back to the terminal and press `Ctrl + C`.
