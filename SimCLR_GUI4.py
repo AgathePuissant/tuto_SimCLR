@@ -348,44 +348,44 @@ if page == "Training":
     st.header("SimCLR Training")
     
     # User Inputs
-    dataset_path = st.text_input("Enter Dataset Path", value="")
-    save_model_path = st.text_input("Enter Model Save Path (file)", value="simclr_model.pth")
-    batch_size = st.slider("Batch Size", 16, 256, 32)
-    epochs = st.slider("Epochs", 1, 300, 10)
+    dataset_path = st.text_input("Enter Dataset Path", value="data")
+    save_model_path = st.text_input("Enter Model Save Path (file)", value="runs/simclr_model.pth")
+    batch_size = st.slider("Batch Size", 16, 256, 128)
+    epochs = st.slider("Epochs", 1, 300, 300)
     learning_rate = st.number_input("Learning Rate", min_value=1e-6, max_value=1e-1, value=1e-3, format="%.6f")
 
     # Checkpoint & best-model options
     checkpoint_freq = st.number_input("Checkpoint every N epochs", min_value=1, max_value=100, value=10, step=1)
     enable_knn = st.checkbox("Enable k-NN evaluation at checkpoints (requires labeled dataset)", value=False)
     labeled_dataset_path = st.text_input("Labeled dataset path (subfolders = classes) - for k-NN", value="")
-    knn_k = st.slider("k for k-NN (majority vote)", 1, 15, 1)
-    save_best_model = st.checkbox("Save best model (based on k-NN acc if enabled, else based on lowest loss)", value=True)
+    knn_k = st.slider("k for k-NN (majority vote)", 1, 15, 5)
+    save_best_model = st.checkbox("Save best model (based on k-NN acc if enabled, else based on lowest loss)", value=False)
 
     # Image Transformation Probabilities
     input_size = st.number_input("Input Size", min_value=64, max_value=512, value=224, step=8)
-    min_scale = st.slider("Minimum Scale for RandomResizedCrop", 0.01, 1.0, 0.08, 0.01)
+    min_scale = st.slider("Minimum Scale for RandomResizedCrop", 0.01, 1.0, 0.3, 0.01)
     cj_col = st.columns(2)
     with cj_col[0]:
-        cj_prob = st.slider("Color Jitter Probability", 0.0, 1.0, 0.8, 0.01)
+        cj_prob = st.slider("Color Jitter Probability", 0.0, 1.0, 0.5, 0.01)
     with cj_col[1]:
-        cj_strength = st.slider("Color Jitter Strength", 0.0, 1.0, 0.5, 0.01)
+        cj_strength = st.slider("Color Jitter Strength", 0.0, 1.0, 0.3, 0.01)
     flip_col = st.columns(2)
     with flip_col[0]:
         hf_prob = st.slider("Horizontal Flip Probability", 0.0, 1.0, 0.5, 0.01)
     with flip_col[1]:
-        vf_prob = st.slider("Vertical Flip Probability", 0.0, 1.0, 0.0, 0.01)
+        vf_prob = st.slider("Vertical Flip Probability", 0.0, 1.0, 0.5, 0.01)
     gray_blur_col = st.columns(2)
     with gray_blur_col[0]:
-        random_grayscale_prob = st.slider("Random Grayscale Probability", 0.0, 1.0, 0.2, 0.01)
+        random_grayscale_prob = st.slider("Random Grayscale Probability", 0.0, 1.0, 0.3, 0.01)
     with gray_blur_col[1]:
-        gaussian_blur_prob = st.slider("Gaussian Blur Probability", 0.0, 1.0, 0.5, 0.01)
+        gaussian_blur_prob = st.slider("Gaussian Blur Probability", 0.0, 1.0, 0.3, 0.01)
     blur_col = st.columns(2)
     with blur_col[0]:
         sigmas_min = st.number_input("Min Sigma for Gaussian Blur", 0.01, 5.0, 0.2, 0.01)
     with blur_col[1]:
         sigmas_max = st.number_input("Max Sigma for Gaussian Blur", 0.1, 5.0, 2.0, 0.01)
     rotation = st.checkbox("Enable Random Rotation", value=False)
-    rr_prob = st.slider("Random Rotation Probability", 0.0, 1.0, 0.0, 0.01) if rotation else 0.0
+    rr_prob = st.slider("Random Rotation Probability", 0.0, 1.0, 0.5, 0.01) if rotation else 0.0
     rr_degrees = st.slider("Rotation Degrees Range", 0, 180, 45, 1) if rotation else None
 
     normalize = {
@@ -394,7 +394,7 @@ if page == "Training":
     }
     
     num_views = st.slider("Number of views per image (N)", 2, 6, 2)  # min 2, max 6, default 2
-    temperature = st.number_input("NT-Xent temperature", min_value=0.01, max_value=1.0, value=0.5, step=0.01, format="%.2f")
+    temperature = st.number_input("NT-Xent temperature", min_value=0.01, max_value=1.0, value=0.8, step=0.01, format="%.2f")
     backbone_simclr = st.selectbox("Backbone", list(_BACKBONE_MAP.keys()), index=2)  # resnet50 par défaut
     out_dim_simclr  = st.number_input("Projection head output dim", min_value=32, max_value=512, value=128, step=32)
 
@@ -735,40 +735,39 @@ if page == "SupCon Training":
     backbone_sup = st.selectbox("Backbone", list(_BACKBONE_MAP.keys()), index=2)  # resnet50 par défaut
     out_dim_sup  = st.number_input("Projection head output dim", min_value=32, max_value=512, value=128, step=32)
 
-    # Augmentation UI (reuse same controls)
-    input_size_sup = st.number_input("Input Size", min_value=64, max_value=512, value=224, step=8)
-    min_scale_sup = st.slider("Minimum Scale for RandomResizedCrop", 0.01, 1.0, 0.08, 0.01)
-    min_crop_sup = st.slider("Minimum Scale for RandomAffine", 0.01, 1.0, 0.6, 0.01)
-    cj_col_sup = st.columns(2)
-    with cj_col_sup[0]:
-        cj_prob_sup = st.slider("Color Jitter Probability", 0.0, 1.0, 0.8, 0.01)
-    with cj_col_sup[1]:
-        cj_strength_sup = st.slider("Color Jitter Strength", 0.0, 1.0, 0.5, 0.01)
-    flip_col_sup = st.columns(2)
-    with flip_col_sup[0]:
-        hf_prob_sup = st.slider("Horizontal Flip Probability", 0.0, 1.0, 0.5, 0.01)
-    with flip_col_sup[1]:
-        vf_prob_sup = st.slider("Vertical Flip Probability", 0.0, 1.0, 0.0, 0.01)
-    gray_blur_col_sup = st.columns(2)
-    with gray_blur_col_sup[0]:
-        random_grayscale_prob_sup = st.slider("Random Grayscale Probability", 0.0, 1.0, 0.2, 0.01)
-    with gray_blur_col_sup[1]:
-        gaussian_blur_prob_sup = st.slider("Gaussian Blur Probability", 0.0, 1.0, 0.5, 0.01)
-    blur_col_sup = st.columns(2)
-    with blur_col_sup[0]:
-        sigmas_min_sup = st.number_input("Min Sigma for Gaussian Blur", 0.01, 5.0, 0.2, 0.01)
-    with blur_col_sup[1]:
-        sigmas_max_sup = st.number_input("Max Sigma for Gaussian Blur", 0.1, 5.0, 2.0, 0.01)
-    rotation_sup = st.checkbox("Enable Random Rotation", value=False)
-    rr_prob_sup = st.slider("Random Rotation Probability", 0.0, 1.0, 0.0, 0.01) if rotation_sup else 0.0
-    rr_degrees_sup = st.slider("Rotation Degrees Range", 0, 180, 45, 1) if rotation_sup else None
+    # Image Transformation Probabilities
+    input_size = st.number_input("Input Size", min_value=64, max_value=512, value=224, step=8)
+    min_scale = st.slider("Minimum Scale for RandomResizedCrop", 0.01, 1.0, 0.3, 0.01)
+    cj_col = st.columns(2)
+    with cj_col[0]:
+        cj_prob = st.slider("Color Jitter Probability", 0.0, 1.0, 0.5, 0.01)
+    with cj_col[1]:
+        cj_strength = st.slider("Color Jitter Strength", 0.0, 1.0, 0.3, 0.01)
+    flip_col = st.columns(2)
+    with flip_col[0]:
+        hf_prob = st.slider("Horizontal Flip Probability", 0.0, 1.0, 0.5, 0.01)
+    with flip_col[1]:
+        vf_prob = st.slider("Vertical Flip Probability", 0.0, 1.0, 0.5, 0.01)
+    gray_blur_col = st.columns(2)
+    with gray_blur_col[0]:
+        random_grayscale_prob = st.slider("Random Grayscale Probability", 0.0, 1.0, 0.3, 0.01)
+    with gray_blur_col[1]:
+        gaussian_blur_prob = st.slider("Gaussian Blur Probability", 0.0, 1.0, 0.3, 0.01)
+    blur_col = st.columns(2)
+    with blur_col[0]:
+        sigmas_min = st.number_input("Min Sigma for Gaussian Blur", 0.01, 5.0, 0.2, 0.01)
+    with blur_col[1]:
+        sigmas_max = st.number_input("Max Sigma for Gaussian Blur", 0.1, 5.0, 2.0, 0.01)
+    rotation = st.checkbox("Enable Random Rotation", value=False)
+    rr_prob = st.slider("Random Rotation Probability", 0.0, 1.0, 0.5, 0.01) if rotation else 0.0
+    rr_degrees = st.slider("Rotation Degrees Range", 0, 180, 45, 1) if rotation else None
+
 
     normalize_sup = {'mean': [0.485, 0.456, 0.406], 'std': [0.229, 0.224, 0.225]}
 
     # SupCon-specific
     num_views_sup = st.slider("Number of views per image (N)", 2, 6, 2)
-    temperature_sup = st.number_input("SupCon temperature (τ)", min_value=0.01, max_value=1.0, value=0.07, step=0.01, format="%.2f")
-    samples_per_image_sup = st.slider("samples_per_image (for sampled loss fallback)", 1, 4, 2)
+    temperature_sup = st.number_input("SupCon temperature (τ)", min_value=0.01, max_value=1.0, value=0.8, step=0.01, format="%.2f")
 
     show_aug_sup = st.button("Show Random Augmentations (SupCon)")
     start_supcon = st.button("Start SupCon Training")
