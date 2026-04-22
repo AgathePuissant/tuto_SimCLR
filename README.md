@@ -70,7 +70,7 @@ conda --version
 ### Step 2 — Clone the repository
 
 ```bash
-git clone https://github.com/your_username/tuto_simclr.git
+git clone https://github.com/AgathePuissant/tuto_simclr.git
 cd tuto_simclr
 ```
 
