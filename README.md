@@ -213,7 +213,7 @@ distinctipy
 
 ---
 
-## 💡 Frequently asked questions
+## 💡 Troubleshooting
 
 **I get `CUDA out of memory`.**
 Reduce the Batch Size in the interface (try 16 or 8).
