@@ -30,9 +30,9 @@ import base64
 from datetime import datetime
 from scipy.stats import mode
 
-for name, l in logging.root.manager.loggerDict.items():
-    if "streamlit" in name:
-        l.disabled = True
+logging.getLogger("streamlit").setLevel(logging.ERROR)
+logging.getLogger("streamlit.runtime.scriptrunner_utils").setLevel(logging.ERROR)
+logging.getLogger("streamlit.runtime.caching").setLevel(logging.ERROR)
 
 # === Backbone registry ===
 _BACKBONE_MAP = {
@@ -64,7 +64,12 @@ class Encoder(nn.Module):
         self.feature_dim = _BACKBONE_FEAT_DIM[backbone]
 
         backbone_fn = _BACKBONE_MAP[backbone]
-        self.encoder = backbone_fn(pretrained=pretrained)
+        # AFTER
+	if pretrained:
+    		weights = "DEFAULT"
+	else:
+    		weights = None
+	self.encoder = backbone_fn(weights=weights)
         self.encoder.fc = nn.Identity()
 
         self.projection_head = nn.Sequential(
