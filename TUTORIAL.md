@@ -59,68 +59,11 @@ Over time, the model develops a **visual fingerprint** (called an **embedding**)
 
 ## 2. Installation and launch
 
-### Step 1 — Install Python
-
-Download Python 3.10 from [python.org](https://www.python.org/downloads/). During installation on Windows, **check the box "Add Python to PATH"**.
-
-To verify Python is correctly installed, open a terminal (PowerShell on Windows, Terminal on Mac/Linux) and type:
-
-```bash
-python --version
-# You should see: Python 3.10.x
-```
-
-### Step 2 — Clone the repository
-
-```bash
-git clone https://github.com/your_username/tuto_simclr.git
-cd tuto_simclr
-```
-
-If you do not have Git installed, click **Code > Download ZIP** on GitHub and extract the archive instead.
-
-### Step 3 — Create a virtual environment
-
-A virtual environment isolates the libraries used by this project from other Python projects on your machine. It avoids version conflicts and is considered best practice.
-
-```bash
-# Create the environment
-python -m venv venv
-
-# Activate it (Windows)
-venv\Scripts\activate
-
-# Activate it (Mac / Linux)
-source venv/bin/activate
-```
-
-You should see `(venv)` appear at the beginning of your command line. This confirms the environment is active.
-
-### Step 4 — Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
-This installs all required libraries (PyTorch, Streamlit, scikit-learn, etc.). It may take a few minutes.
-
-> **GPU note:** If you have an NVIDIA card and want to use CUDA, replace the `torch` line in `requirements.txt` with the version matching your CUDA toolkit, available at [pytorch.org](https://pytorch.org/get-started/locally/).
-
-### Step 5 — Launch the interface
-
-```bash
-streamlit run SimCLR_GUI4.py
-```
-
-Your default browser opens automatically at `http://localhost:8501`. If it does not, copy-paste that URL into your browser.
-
-> **To stop the app**, go back to the terminal and press `Ctrl + C`.
-
----
+All installation and launch instructions can be found in the README.md.
 
 ## 3. Preparing your dataset
 
-### The golden rule: one subfolder = one class
+### One subfolder = one class
 
 The interface expects your images to be organised like this:
 
@@ -146,7 +89,7 @@ The `data/` folder in the repository contains a small set of example images orga
 
 ### Image quality tips
 
-- **Minimum resolution:** 64x64 pixels (the interface automatically resizes to 224x224 by default)
+- **Minimum resolution:** The interface automatically resizes to 224x224 by default.
 - **Mixed resolutions:** no problem — resizing is handled automatically
 - **Complex backgrounds:** no hard restriction, but if your classes are defined by a central object (e.g. insect species), consider removing the background for better results
 - **Blurry or corrupted images:** try to remove them — they can harm training
