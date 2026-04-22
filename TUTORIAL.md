@@ -248,7 +248,7 @@ If two images show the same type of object, their embeddings will be close in th
 
 1. **Image folder:** point to the folder containing your images (subfolders are not required — all images in the folder and its subfolders will be processed)
 2. **Upload a model (.pth):** upload your trained file (e.g. `best_model.pth`)
-3. **CSV save path:** where to save the results
+3. **CSV save path (file):** where to save the results
 4. Click **Generate embeddings**
 
 A progress bar shows the current image count as extraction proceeds.
@@ -263,6 +263,8 @@ dog_001.jpg,-0.445,0.334,-0.120,...
 ```
 
 This file is used in the Visualization page to produce 2D plots.
+
+Additionally, two .npy files are generated, containing the labels (ref_labels.npy) and embeddings (ref_feats.npy) for the images, for easier downstream use.
 
 ---
 
