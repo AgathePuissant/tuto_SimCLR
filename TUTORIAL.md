@@ -1,6 +1,6 @@
 # 📖 Full Tutorial — SimCLR & SupCon GUI
 
-**Who is this for?** This tutorial is written for anyone curious about visual AI, with no prior machine learning experience. Each section explains *why* we do something before explaining *how* to do it in the interface.
+Each section explains *why* we do something before explaining *how* to do it in the interface.
 
 ---
 
