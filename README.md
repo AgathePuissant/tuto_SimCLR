@@ -24,6 +24,7 @@ tuto_simclr/
 ├── requirements.txt        # Python dependencies
 ├── README.md               # This file
 ├── TUTORIAL.md             # Step-by-step tutorial
+├── results_example/...     # Store the model, embeddings etc. obtained from the example data
 └── data/
     ├── class_A/            # One subfolder = one class
     │   ├── image1.jpg
