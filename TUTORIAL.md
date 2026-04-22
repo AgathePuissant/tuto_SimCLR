@@ -256,6 +256,7 @@ runs/
 |   +-- checkpoint_epoch_10.pth    (model state saved at epoch 10)
 |   +-- checkpoint_epoch_20.pth
 |   +-- ...
++-- best_model.pth         (model with either the lowest loss or the best k-nn if enabled)
 +-- simclr_model.pth           (model at the very last epoch)
 +-- simclr_model_training_log.csv   (epoch-by-epoch metrics history)
 ```
