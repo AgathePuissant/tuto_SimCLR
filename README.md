@@ -248,7 +248,3 @@ It covers:
 7. 2D embedding visualisation
 
 ---
-
-## 📄 Licence
-
-MIT — free to use, modify, and distribute.
