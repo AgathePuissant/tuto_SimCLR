@@ -207,7 +207,7 @@ The speed of learning. The default `0.001` works well in most cases. Do not chan
 SimCLR creates multiple augmented versions of each image. 2 views is the minimum and most common setting. More views produce richer training but slow things down.
 
 **NT-Xent temperature**
-A hyperparameter of the loss function. The default `0.5` is standard. A lower value (e.g. 0.1) makes the model more strict in its comparisons.
+A hyperparameter of the loss function. A lower value (e.g. 0.1) makes the model more strict in its comparisons.
 
 #### k-NN evaluation at checkpoints
 
@@ -221,11 +221,11 @@ Augmentations are the random transformations applied to each image to create the
 
 | Augmentation | Effect | Default |
 |---|---|---|
-| Color Jitter | Modifies brightness, contrast, saturation | Prob: 0.8, Strength: 0.5 |
+| Color Jitter | Modifies brightness, contrast, saturation | Prob: 0.5, Strength: 0.3 |
 | Horizontal Flip | Mirrors the image left-right | Prob: 0.5 |
-| Vertical Flip | Flips the image upside down | Prob: 0.0 (disabled) |
-| Grayscale | Converts to greyscale | Prob: 0.2 |
-| Gaussian Blur | Applies a light blur | Prob: 0.5 |
+| Vertical Flip | Flips the image upside down | Prob: 0.5 |
+| Grayscale | Converts to greyscale | Prob: 0.3 |
+| Gaussian Blur | Applies a light blur | Prob: 0.3 |
 | Random Rotation | Rotates the image by a random angle | Disabled by default |
 
 > **Tip:** Click **Preview augmentations** before training to see exactly how your images will be transformed.
@@ -283,13 +283,7 @@ In practice, this produces better-structured embeddings where classes form tight
 
 ### SupCon-specific parameters
 
-Most parameters are identical to SimCLR. Here are the differences:
-
-**SupCon temperature (tau)**
-The recommended value `0.07` from the original SupCon paper is much lower than SimCLR's `0.5`, because SupCon works with supervised positives and can afford to be more discriminating.
-
-**samples_per_image**
-In memory-efficient mode, this controls how many positive pairs are sampled per image per batch. `2` is a good balance between quality and memory usage.
+Most parameters are identical to SimCLR.
 
 ### Expected results
 
