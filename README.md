@@ -24,6 +24,7 @@ tuto_simclr/
 ├── requirements.txt        # Python dependencies
 ├── README.md               # This file
 ├── TUTORIAL.md             # Step-by-step tutorial
+├── results_example/...     # Store the model, embeddings etc. obtained from the example data
 └── data/
     ├── class_A/            # One subfolder = one class
     │   ├── image1.jpg
@@ -69,7 +70,7 @@ conda --version
 ### Step 2 — Clone the repository
 
 ```bash
-git clone https://github.com/your_username/tuto_simclr.git
+git clone https://github.com/AgathePuissant/tuto_simclr.git
 cd tuto_simclr
 ```
 
