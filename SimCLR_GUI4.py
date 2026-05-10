@@ -65,11 +65,11 @@ class Encoder(nn.Module):
 
         backbone_fn = _BACKBONE_MAP[backbone]
         # AFTER
-	if pretrained:
-    		weights = "DEFAULT"
-	else:
-    		weights = None
-	self.encoder = backbone_fn(weights=weights)
+        if pretrained:
+    	    weights = "DEFAULT"
+        else:
+    	    weights = None
+        self.encoder = backbone_fn(weights=weights)
         self.encoder.fc = nn.Identity()
 
         self.projection_head = nn.Sequential(
