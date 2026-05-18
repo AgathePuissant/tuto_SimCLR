@@ -179,7 +179,7 @@ class SimCLRTransform:
         cj_prob: float = 0.8,
         cj_strength: float = 0.5,
         min_scale: float = 0.08,
-        min_crop : float = 0.6,
+        #min_crop : float = 0.6,
         random_gray_scale: float = 0.2,
         gaussian_blur: float = 0.5,
         kernel_size: Optional[int] = None,
@@ -198,7 +198,7 @@ class SimCLRTransform:
 
         transform_list = [
             transforms.RandomResizedCrop(size=input_size, scale=(min_scale, 1.0)),
-            transforms.RandomAffine(degrees=(30, 70), translate=(0.1, 0.3), scale=(min_crop, 1)),
+            #transforms.RandomAffine(degrees=(30, 70), translate=(0.1, 0.3), scale=(min_crop, 1)),
         ]
 
         if rr_prob > 0 and rr_degrees is not None:
@@ -777,7 +777,7 @@ if page == "SupCon Training":
         return {
             "input_size": input_size_sup,
             "min_scale": min_scale_sup,
-            "min_crop" : min_crop_sup,
+            #"min_crop" : min_crop_sup,
             "cj_prob": cj_prob_sup,
             "cj_strength": cj_strength_sup,
             "hf_prob": hf_prob_sup,
@@ -796,18 +796,18 @@ if page == "SupCon Training":
     if show_aug_sup and dataset_path_sup:
         try:
             tr_show = SimCLRTransform(
-                input_size=input_size_sup,
-                cj_prob=cj_prob_sup,
-                cj_strength=cj_strength_sup,
-                min_scale=min_scale_sup,
-                min_crop=min_crop_sup,
-                random_gray_scale=random_grayscale_prob_sup,
-                gaussian_blur=gaussian_blur_prob_sup,
-                sigmas=(sigmas_min_sup, sigmas_max_sup),
-                vf_prob=vf_prob_sup,
-                hf_prob=hf_prob_sup,
-                rr_prob=rr_prob_sup,
-                rr_degrees=(-rr_degrees_sup, rr_degrees_sup) if rr_degrees_sup else None,
+                input_size=input_size,
+                cj_prob=cj_prob,
+                cj_strength=cj_strength,
+                min_scale=min_scale,
+                #min_crop=min_crop,
+                random_gray_scale=random_grayscale_prob,
+                gaussian_blur=gaussian_blur_prob,
+                sigmas=(sigmas_min, sigmas_max),
+                vf_prob=vf_prob,
+                hf_prob=hf_prob,
+                rr_prob=rr_prob,
+                rr_degrees=(-rr_degrees, rr_degrees) if rr_degrees else None,
                 normalize=normalize_sup,
                 num_views=num_views_sup
             )
@@ -1099,17 +1099,17 @@ if page == "SupCon Training":
         try:
             st.write("Loading dataset for SupCon...")
             transform_sup = SimCLRTransform(
-                input_size=input_size_sup,
-                cj_prob=cj_prob_sup,
-                cj_strength=cj_strength_sup,
-                min_scale=min_scale_sup,
-                random_gray_scale=random_grayscale_prob_sup,
-                gaussian_blur=gaussian_blur_prob_sup,
-                sigmas=(sigmas_min_sup, sigmas_max_sup),
-                vf_prob=vf_prob_sup,
-                hf_prob=hf_prob_sup,
-                rr_prob=rr_prob_sup,
-                rr_degrees=(-rr_degrees_sup, rr_degrees_sup) if rr_degrees_sup else None,
+                input_size=input_size,
+                cj_prob=cj_prob,
+                cj_strength=cj_strength,
+                min_scale=min_scale,
+                random_gray_scale=random_grayscale_prob,
+                gaussian_blur=gaussian_blur_prob,
+                sigmas=(sigmas_min, sigmas_max),
+                vf_prob=vf_prob,
+                hf_prob=hf_prob,
+                rr_prob=rr_prob,
+                rr_degrees=(-rr_degrees, rr_degrees) if rr_degrees else None,
                 normalize=normalize_sup,
                 num_views=num_views_sup
             )
