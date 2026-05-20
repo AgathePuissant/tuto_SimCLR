@@ -678,11 +678,11 @@ def _make_transform(p, normalize, num_views):
 # Streamlit app
 # ---------------------------------------------------------------------------
 
-st.title("SimCLR Training GUI")
+st.title("Contrastive learning GUI")
 
 page = st.sidebar.radio(
     "Navigation",
-    ["Training", "SupCon Training", "Generate Embeddings", "Validation", "GradCAM", "Visualization"],
+    ["SimCLR training", "SupCon Training", "Generate Embeddings", "Validation", "GradCAM", "Visualization"],
 )
 
 
@@ -690,7 +690,7 @@ page = st.sidebar.radio(
 # Training page
 # ===========================================================================
 
-if page == "Training":
+if page == "SimCLR training":
     st.header("SimCLR Self-Supervised Training")
 
     dataset_path    = st.text_input("Dataset path", value="data")
@@ -728,6 +728,7 @@ if page == "Training":
 
     if start_training and dataset_path:
         try:
+            
             st.write("Loading dataset…")
             transform = _make_transform(aug_p, normalize, num_views)
             dataset   = datasets.ImageFolder(root=dataset_path, transform=transform)
@@ -736,6 +737,7 @@ if page == "Training":
 
             model  = Encoder(backbone=backbone_simclr, out_dim=int(out_dim_simclr))
             device = "cuda" if torch.cuda.is_available() else "cpu"
+            st.write(f"using device: {device}")
 
             def _criterion(z, batch_size, num_views):
                 return nt_xent_loss_multi(z, batch_size, num_views, temperature=temperature)
@@ -818,8 +820,9 @@ elif page == "SupCon Training":
 
                 model_sup  = Encoder(backbone=backbone_sup, out_dim=out_dim_sup)
                 device_sup = "cuda" if torch.cuda.is_available() else "cpu"
-
-                use_all_pairs = (num_views_sup * batch_size_sup) <= 512
+                st.write(f"using device: {device_sup}")
+                
+                use_all_pairs = (num_views_sup * batch_size_sup) <= 512 #Else memory overload
                 criterion_sup = SupConLossLite(
                     temperature=temperature_sup,
                     use_all_pairs=use_all_pairs,
@@ -937,7 +940,7 @@ elif page == "Generate Embeddings":
 elif page == "Validation":
     st.header("Linear Probe Validation")
 
-    model_path            = st.text_input("Path to trained model", value="simclr_model.pth")
+    model_selection   = st.file_uploader("Model file (.pth)", type=["pth"])
     dataset_path          = st.text_input("Validation dataset path", value="")
     batch_size_validation = st.slider("Batch size", 16, 128, 32)
     start_validation      = st.button("Start Validation")
@@ -1037,7 +1040,7 @@ elif page == "Validation":
         kappa = cohen_kappa_score(all_labels, all_preds)
         return accuracy, f1, kappa
 
-    if start_validation and model_path and dataset_path:
+    if start_validation and model_selection and dataset_path:
         try:
             device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
             transform_val = transforms.Compose([
@@ -1047,7 +1050,10 @@ elif page == "Validation":
             ])
             dataset     = datasets.ImageFolder(root=dataset_path, transform=transform_val)
             class_names = dataset.classes
-            model       = load_model(model_path, device=str(device))
+            with tempfile.NamedTemporaryFile(suffix=".pth", delete=False) as tmp:
+                tmp.write(model_selection.read())
+                tmp_path = tmp.name
+            model = load_model(tmp_path, device=str(device))
 
             for param in model.encoder.parameters():
                 param.requires_grad = False
@@ -1093,12 +1099,15 @@ elif page == "GradCAM":
     gradcam_img   = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"]) if gradcam_mode == "Single Image" else None
     gradcam_folder = st.text_input("Image folder") if gradcam_mode == "Folder" else ""
     output_folder  = st.text_input("Output folder", "gradcam_results")
-    model_path     = st.text_input("Path to trained model", value="simclr_model.pth")
+    model_selection   = st.file_uploader("Model file (.pth)", type=["pth"])
     run_gradcam    = st.button("Run Grad-CAM")
 
     if run_gradcam:
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        model  = load_model(model_path, device=str(device)).to(device)
+        with tempfile.NamedTemporaryFile(suffix=".pth", delete=False) as tmp:
+            tmp.write(model_selection.read())
+            tmp_path = tmp.name
+        model = load_model(tmp_path, device=str(device)).to(device)
         model.eval()
 
         cam = GradCAM(model=model, target_layers=[model.encoder.layer3])
